@@ -50,6 +50,21 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
 
 extension MapVC: MKMapViewDelegate
 {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?
+    {
+        //conditional so orange pin is not dropped on users location
+        if annotation is MKUserLocation
+        {
+            return nil
+        }
+        
+        let pinAnnotation = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "droppablePin")
+        pinAnnotation.pinTintColor = #colorLiteral(red: 0.9647058824, green: 0.6509803922, blue: 0.137254902, alpha: 1)
+        pinAnnotation.animatesDrop = true
+        
+        return pinAnnotation
+    }
+    
     func centerMapOnUserLocation()
     {
         guard let coordinate = locationManager.location?.coordinate else {return}
